@@ -1,9 +1,12 @@
 package alinbarbu.abudget;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import alinbarbu.abudget.BudgetPreviewFragment.OnListFragmentInteractionListener;
@@ -23,10 +26,12 @@ public class MyBudgetPreviewRecyclerViewAdapter extends RecyclerView.Adapter<MyB
 
     private final List<BudgetPreview> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private final Context mContext;
 
-    public MyBudgetPreviewRecyclerViewAdapter(List<BudgetPreview> items, OnListFragmentInteractionListener listener) {
+    public MyBudgetPreviewRecyclerViewAdapter(List<BudgetPreview> items, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
         mListener = listener;
+        mContext = context;
     }
 
     @Override
@@ -47,6 +52,13 @@ public class MyBudgetPreviewRecyclerViewAdapter extends RecyclerView.Adapter<MyB
         NumberFormat formatter = new DecimalFormat("#,##0.00");
         holder.mAllocatedAmountView.setText(formatter.format(mValues.get(position).allocatedAmount) + currency);
         holder.mSpentAmountView.setText(formatter.format(mValues.get(position).spentAmount) + currency);
+
+        Double progress = mValues.get(position).spentAmount / mValues.get(position).allocatedAmount * 100;
+        if (progress >= 100) {
+            progress = 100.0;
+            holder.mProgressBar.setProgressDrawable(ContextCompat.getDrawable(mContext, R.drawable.budget_progressbar_exceeded));
+        }
+        holder.mProgressBar.setProgress(progress.intValue());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,15 +83,17 @@ public class MyBudgetPreviewRecyclerViewAdapter extends RecyclerView.Adapter<MyB
         public final TextView mPeriodView;
         public final TextView mAllocatedAmountView;
         public final TextView mSpentAmountView;
+        public final ProgressBar mProgressBar;
         public BudgetPreview mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mNameView = (TextView) view.findViewById(R.id.name);
-            mPeriodView = (TextView) view.findViewById(R.id.period);
-            mAllocatedAmountView = (TextView) view.findViewById(R.id.allocatedAmount);
-            mSpentAmountView = (TextView) view.findViewById(R.id.spentAmount);
+            mNameView = view.findViewById(R.id.name);
+            mPeriodView = view.findViewById(R.id.period);
+            mAllocatedAmountView = view.findViewById(R.id.allocatedAmount);
+            mSpentAmountView = view.findViewById(R.id.spentAmount);
+            mProgressBar = view.findViewById(R.id.progressBar);
         }
 
         @Override

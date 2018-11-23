@@ -20,12 +20,16 @@ public class BudgetList {
 
     private static final int COUNT = 10;
 
-    private static final String[] budgetNames = {
-        "Food", "Supermarket", "Car",
-        "Bills", "Very long budget name",
-        "Charity", "Hobbies", "Restaurant",
-        "Vacation", "Gifts"
+    private static final String[] budgetNamesData = {
+            "Food", "Supermarket", "Car", "Bills", "Very long budget name",
+            "Charity", "Hobbies", "Restaurant", "Vacation", "Gifts"
     };
+
+    private static final Double[] budgetAllocatedData = {
+            200.0, 500.0, 100000.0, 600.0, 600000000.0, 200.0, 500.0, 1500.0, 5000.0, 1000.0 };
+
+    private static final Double[] budgetsSpentData = {
+            123.45, 200.90, 94550.50, 600.0, 450563445.0, 234.12, 443.50, 1013.55, 2305.0, 705.1 };
 
     static {
         // Add some sample items.
@@ -42,11 +46,11 @@ public class BudgetList {
     private static BudgetPreview createBudgetPreview(int position) {
         return new BudgetPreview(
                 String.valueOf(position),
-                budgetNames[position-1],
+                budgetNamesData[position-1],
                 new Date(),
                 new Date(),
-                1000.0,
-                200.54,
+                budgetAllocatedData[position-1],
+                budgetsSpentData[position-1],
                 "RON");
     }
 

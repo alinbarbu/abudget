@@ -67,7 +67,7 @@ public class BudgetPreviewFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyBudgetPreviewRecyclerViewAdapter(BudgetList.BUDGETS, mListener));
+            recyclerView.setAdapter(new MyBudgetPreviewRecyclerViewAdapter(BudgetList.BUDGETS, mListener, context));
         }
         return view;
     }
