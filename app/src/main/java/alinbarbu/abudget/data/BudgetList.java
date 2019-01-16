@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 public class BudgetList {
 
     /**
      * An array of sample (BudgetPreview) items.
      */
-    public static final List<BudgetPreview> BUDGETS = new ArrayList<BudgetPreview>();
+    public static final List<BudgetPreview> BUDGETS = new ArrayList<>();
 
     /**
-     * A map of sample (BudgetPreview) items, by ID.
+     * A map of sample (BudgetExpenses) items, by budget ID.
      */
-    public static final Map<String, BudgetPreview> BUDGETS_MAP = new HashMap<String, BudgetPreview>();
+    public static final HashMap<String, List<Expense>> EXPENSE_LIST = new HashMap<>();
 
     private static final int COUNT = 10;
 
@@ -40,7 +40,7 @@ public class BudgetList {
 
     private static void addItem(BudgetPreview item) {
         BUDGETS.add(item);
-        BUDGETS_MAP.put(item.id, item);
+        EXPENSE_LIST.put(item.id, createExpenseList(item.id));
     }
 
     private static BudgetPreview createBudgetPreview(int position) {
@@ -52,6 +52,36 @@ public class BudgetList {
                 budgetAllocatedData[position-1],
                 budgetsSpentData[position-1],
                 "RON");
+    }
+
+    private static List<Expense> createExpenseList(String budgetId) {
+
+        List<String> tags = new ArrayList<>();
+        tags.add("Cinema");
+        tags.add("Shopping");
+        tags.add("Sport");
+        tags.add("Tickets");
+        tags.add("Tickets");
+        tags.add("Tickets");
+        tags.add("Tickets");
+
+        List<Expense> expenseList = new ArrayList<>();
+
+        Random r = new Random();
+        int count = r.nextInt(10);
+
+        for (int i = 1; i <= count; i++) {
+            Expense expense = new Expense(
+                    budgetId,
+                    205.15,
+                    "RON",
+                    new Date(),
+                    "inghetata cu banane",
+                    tags);
+            expenseList.add(expense);
+        }
+
+        return expenseList;
     }
 
     public static class BudgetPreview {
@@ -84,6 +114,31 @@ public class BudgetList {
         @Override
         public String toString() {
             return name;
+        }
+    }
+
+    public static class Expense {
+        public final String budgetId;
+        public final Double amount;
+        public final String currency;
+        public final Date date;
+        public final String description;
+        public final List<String> tags;
+
+        public Expense(
+                String budgetId,
+                Double amount,
+                String currency,
+                Date date,
+                String description,
+                List<String> tags
+        ) {
+            this.budgetId = budgetId;
+            this.amount = amount;
+            this.currency = currency;
+            this.date = date;
+            this.description = description;
+            this.tags = tags;
         }
     }
 }
